@@ -17,26 +17,26 @@
           const { latitude, longitude } = position.coords;
           const locationData = { latitude, longitude };
           
-         fetch('/location', {
+          fetch('/location', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(locationData)
           })
-          .then(response => response.json())
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
           .then(data => {
             console.log(data.message);
           })
           .catch(error => {
             console.error('Error sending location:', error);
           });
-        }, error => {
-          console.error('Geolocation error:', error);
-        });
-      } else {
-        console.error('Geolocation is not available in this browser.');
-      }
+
     });
   </script>
 </body>
