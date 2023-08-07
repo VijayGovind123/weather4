@@ -22,7 +22,10 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(locationData)
+                body: JSON.stringify({
+                    latitude:latitude,
+                    longitude:longitude
+                })
                 })
                 .then(response => {
                 if (!response.ok) {
