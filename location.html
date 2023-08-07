@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geolocation Example</title>
+</head>
+<body>
+  <button id="getLocation">Get Location</button>
+  
+  <script>
+    const getLocationButton = document.getElementById('getLocation');
+    
+    getLocationButton.addEventListener('click', () => {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const { latitude, longitude } = position.coords;
+          const locationData = { latitude, longitude };
+          
+         fetch('/location', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(locationData)
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.message);
+          })
+          .catch(error => {
+            console.error('Error sending location:', error);
+          });
+        }, error => {
+          console.error('Geolocation error:', error);
+        });
+      } else {
+        console.error('Geolocation is not available in this browser.');
+      }
+    });
+  </script>
+</body>
+</html>
